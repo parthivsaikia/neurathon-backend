@@ -1,5 +1,5 @@
 import textwrap
-from trace import extract_text_from_pdf, extract_text_from_docx
+from extraction import extract_text_from_pdf, extract_text_from_docx
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 
 # Load Summarization Model
@@ -45,8 +45,3 @@ def summarize_research_paper(file_path):
 
     return summarize_text(abstract, intro, conclusion, max_length=800)
 
-# **Run the Summarization**
-file_path = "/content/your_document.pdf"  # Change this to your file
-summary_output = summarize_research_paper(file_path)
-
-print("\nGenerated Summary:\n", summary_output)
