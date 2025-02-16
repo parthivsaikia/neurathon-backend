@@ -1,6 +1,7 @@
 import re
 import nltk
-from langchain.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyPDFLoader
+
 from docx import Document
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 
