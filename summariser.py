@@ -7,7 +7,7 @@ model_name = "facebook/bart-large-cnn"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
-def summarize_text(abstract, intro, conclusion, max_length=800):
+def summarize_text(abstract, intro, conclusion, max_length=1600):
     """Summarizes extracted text using a transformer model with a structured prompt."""
     summarizer = pipeline("summarization", model=model, tokenizer=tokenizer, device=-1)
 
