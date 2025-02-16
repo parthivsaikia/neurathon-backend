@@ -1,30 +1,52 @@
 import textwrap
+from trace import extract_text_from_pdf, extract_text_from_docx
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 
-def summarize_text(abstract, intro, conclusion, model_name="facebook/bart-large-cnn"):
-    # Load model and tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+# Load Summarization Model
+model_name = "facebook/bart-large-cnn"
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
 
-    # Use CPU
-    device = "cpu"
-    model = model.to(device)
-
+def summarize_text(abstract, intro, conclusion, max_length=800):
+    """Summarizes extracted text using a transformer model with a structured prompt."""
     summarizer = pipeline("summarization", model=model, tokenizer=tokenizer, device=-1)
 
-     # Create prompt
+    # Generate structured prompt
     prompt = (
         "Summarize the key sections of this research paper while preserving technical accuracy.\n"
-        "### Abstract:\n" + abstract + "\n\n"
-        "### Introduction:\n" + intro + "\n\n"
-        "### Conclusion:\n" + conclusion
+        "Provide insights into core concepts, research challenges, methodologies, findings, and conclusions.\n\n"
+        f"### Abstract:\n{abstract}\n\n"
+        f"### Introduction:\n{intro}\n\n"
+        f"### Conclusion:\n{conclusion}\n\n"
+        "Generate a structured summary capturing the most important aspects of this paper."
     )
 
-        # Tokenize and summarize
-    inputs = tokenizer(prompt, return_tensors="pt", max_length=512, truncation=True)
-    inputs = {key: value.to(device) for key, value in inputs.items()}
-
-    summary_ids = model.generate(**inputs, max_length=512, min_length=100, do_sample=False)
+    # Tokenize & truncate text if too long
+    inputs = tokenizer(prompt, return_tensors="pt", max_length=1024, truncation=True)
+    
+    summary_ids = model.generate(**inputs, max_length=max_length, min_length=300, do_sample=False)
     summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
-
+    
     return "\n".join(textwrap.wrap(summary, width=80))
+
+def summarize_research_paper(file_path):
+    """Extracts text from a document and generates a structured summary."""
+    if file_path.endswith(".pdf"):
+        text = extract_text_from_pdf(file_path)
+    elif file_path.endswith(".docx"):
+        text = extract_text_from_docx(file_path)
+    else:
+        raise ValueError("Unsupported file format! Please provide a PDF or DOCX.")
+
+    # Extract and clean sections
+    abstract = text.split("\n")[0] if text else "No abstract found."
+    intro = text.split("\n")[1] if len(text.split("\n")) > 1 else "No introduction found."
+    conclusion = text.split("\n")[-1] if text else "No conclusion found."
+
+    return summarize_text(abstract, intro, conclusion, max_length=800)
+
+# **Run the Summarization**
+file_path = "/content/your_document.pdf"  # Change this to your file
+summary_output = summarize_research_paper(file_path)
+
+print("\nGenerated Summary:\n", summary_output)

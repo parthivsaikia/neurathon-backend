@@ -6,3 +6,4 @@ transformers
 nltk
 torch
 langchain-community
+pyPDF2
