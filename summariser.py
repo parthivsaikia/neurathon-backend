@@ -11,3 +11,11 @@ def summarize_text(abstract, intro, conclusion, model_name="facebook/bart-large-
     model = model.to(device)
 
     summarizer = pipeline("summarization", model=model, tokenizer=tokenizer, device=-1)
+
+     # Create prompt
+    prompt = (
+        "Summarize the key sections of this research paper while preserving technical accuracy.\n"
+        "### Abstract:\n" + abstract + "\n\n"
+        "### Introduction:\n" + intro + "\n\n"
+        "### Conclusion:\n" + conclusion
+    )
