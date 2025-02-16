@@ -1,0 +1,5 @@
+
+POST https://parthivsaikia-neurathon-backend.hf.space/analyze
+Content-Type: multipart/form-data
+
+@file=neurathon-backend/NIPS-2017-attention-is-all-you-need-Paper.pdf
