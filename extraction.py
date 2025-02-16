@@ -18,3 +18,13 @@ def extract_text_from_pdf(pdf_path):
     return text
 
 
+# ===========================
+# 2. Extract Text from DOCX
+# ===========================
+def extract_text_from_docx(docx_path):
+    doc = Document(docx_path)
+    text = "\n".join([para.text for para in doc.paragraphs])
+    return text
+
+
+
