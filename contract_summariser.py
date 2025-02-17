@@ -44,4 +44,4 @@ def summarize_contract_policy(file_path):
     preprocessed_text = preprocess_text(text)
 
     # Summarize preprocessed text
-    return summarize_text(preprocessed_text, max_length=800)
+    return summarize_text(preprocessed_text, max_length=1600)
