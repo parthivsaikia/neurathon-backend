@@ -24,7 +24,7 @@ def summarize_text(abstract, intro, conclusion, max_length=1600):
     # Tokenize & truncate text if too long
     inputs = tokenizer(prompt, return_tensors="pt", max_length=1024, truncation=True)
     
-    summary_ids = model.generate(**inputs, max_length=max_length, min_length=300, do_sample=False)
+    summary_ids = model.generate(**inputs, max_length=100, min_length=50, do_sample=False)
     summary = tokenizer.decode(summary_ids[0], skip_special_tokens=True)
     
     return "\n".join(textwrap.wrap(summary, width=80))
