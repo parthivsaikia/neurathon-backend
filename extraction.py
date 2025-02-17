@@ -26,3 +26,24 @@ def save_extracted_text(file_path, output_file="extracted_text.txt"):
 
     with open(output_file, "w", encoding="utf-8") as file:
         file.write(text)
+
+import re
+
+def preprocess_text(text):
+    """
+    Preprocesses the extracted text by:
+    - Removing extra whitespace and newlines
+    - Removing special characters (optional)
+    - Normalizing text (e.g., lowercasing, if needed)
+    """
+    # Remove extra whitespace and newlines
+    text = re.sub(r"\s+", " ", text).strip()
+    
+    # Remove special characters (optional, depending on the use case)
+    text = re.sub(r"[^\w\s.,;:!?()-]", "", text)
+    
+    # Normalize text (e.g., convert to lowercase if needed)
+    text = text.lower()  # Optional, depending on the use case
+    
+    return text
+

@@ -1,7 +1,8 @@
 # app.py
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from summariser import summarize_research_paper
+from research_summariser import summarize_research_paper
+from contract_summariser import summarize_contract_policy
 import shutil
 import os
 
@@ -25,7 +26,7 @@ app.add_middleware(
 def greet_json():
     return {"message": "Hello, World!","lol": "no"}
 
-@app.post("/analyze/")
+@app.post("/analyze/research")
 async def analyze_research_paper(file: UploadFile = File(...)):
     try:
         # Save the uploaded file temporarily
@@ -35,6 +36,25 @@ async def analyze_research_paper(file: UploadFile = File(...)):
 
         # Generate summary using the summariser module
         summary = summarize_research_paper(temp_file_path)
+
+        # Remove the temporary file
+        os.remove(temp_file_path)
+
+        return {"summary": summary}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/analyze/contract")
+async def analyze_contract_paper(file: UploadFile = File(...)):
+    try:
+        # Save the uploaded file temporarily
+        temp_file_path = f"temp_{file.filename}"
+        with open(temp_file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        # Generate summary using the summariser module
+        summary = summarize_contract_policy(temp_file_path)
 
         # Remove the temporary file
         os.remove(temp_file_path)
