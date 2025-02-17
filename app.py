@@ -3,6 +3,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from research_summariser import summarize_research_paper
 from contract_summariser import summarize_contract_policy
+from legal_summariser import summarize_legal_document
 import shutil
 import os
 
@@ -55,6 +56,25 @@ async def analyze_contract_paper(file: UploadFile = File(...)):
 
         # Generate summary using the summariser module
         summary = summarize_contract_policy(temp_file_path)
+
+        # Remove the temporary file
+        os.remove(temp_file_path)
+
+        return {"summary": summary}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/analyze/legal/")
+async def analyze_legal_paper(file: UploadFile = File(...)):
+    try:
+        # Save the uploaded file temporarily
+        temp_file_path = f"temp_{file.filename}"
+        with open(temp_file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+
+        # Generate summary using the summariser module
+        summary = summarize_legal_document(temp_file_path)
 
         # Remove the temporary file
         os.remove(temp_file_path)
