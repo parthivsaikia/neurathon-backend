@@ -9,7 +9,8 @@ app = FastAPI()
 
 origins = [
     "http://localhost:5173",
-    "https://neurathon-frontend.vercel.app/"
+    "https://neurathon-frontend.vercel.app/",
+    "https://bilahigpt.vercel.app/"
 ]
 
 app.add_middleware(
