@@ -1,3 +1,4 @@
 
-POST https://parthivsaikia-neurathon-backend.hf.space/analyze/
-@file=neurathon-backend/NIPS-2017-attention-is-all-you-need-Paper.pdf
+POST https://parthivsaikia-neurathon-backend.hf.space/analyze/contract/
+Content-Type: multipart/form-data; boundary=boundary
+< neurathon-backend/contract1.pdf
