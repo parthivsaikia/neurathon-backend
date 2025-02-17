@@ -26,7 +26,7 @@ app.add_middleware(
 def greet_json():
     return {"message": "Hello, World!","lol": "no"}
 
-@app.post("/analyze/research")
+@app.post("/analyze/research/")
 async def analyze_research_paper(file: UploadFile = File(...)):
     try:
         # Save the uploaded file temporarily
@@ -45,7 +45,7 @@ async def analyze_research_paper(file: UploadFile = File(...)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     
-@app.post("/analyze/contract")
+@app.post("/analyze/contract/")
 async def analyze_contract_paper(file: UploadFile = File(...)):
     try:
         # Save the uploaded file temporarily
