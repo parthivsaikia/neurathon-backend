@@ -1,7 +1,7 @@
 import textwrap
 import re
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
-from trace import extract_text_from_pdf, extract_text_from_docx
+from extraction import extract_text_from_pdf, extract_text_from_docx
 # Load Summarization Model
 model_name = "facebook/bart-large-cnn"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
