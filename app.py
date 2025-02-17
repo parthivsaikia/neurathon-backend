@@ -8,7 +8,8 @@ import os
 app = FastAPI()
 
 origins = [
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "https://neurathon-frontend.vercel.app/"
 ]
 
 app.add_middleware(
@@ -21,7 +22,7 @@ app.add_middleware(
 
 @app.get("/")
 def greet_json():
-    return {"message": "Hello, World!"}
+    return {"message": "Hello, World!","lol": "no"}
 
 @app.post("/analyze/")
 async def analyze_research_paper(file: UploadFile = File(...)):
